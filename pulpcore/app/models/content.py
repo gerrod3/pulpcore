@@ -15,7 +15,8 @@ from itertools import chain
 from django.conf import settings
 from django.core import validators
 from django.core.files.storage import default_storage
-from django.db import IntegrityError, models, transaction
+from django.db import IntegrityError, models, transaction, connections, NotSupportedError
+from django.utils.functional import partition
 from django.forms.models import model_to_dict
 from django_lifecycle import BEFORE_UPDATE, BEFORE_SAVE, hook
 
@@ -57,6 +58,109 @@ class BulkCreateManager(models.Manager):
     A manager that provides a bulk_get_or_create()
     """
 
+    def _populate_pk_values(self, objs):
+        for obj in objs:
+            if obj.pk is None:
+                obj.pk = obj._meta.pk.get_pk_value_on_save(obj)
+
+    def _batched_insert(self, objs, fields, batch_size, ignore_conflicts=False):
+        """
+        Helper method for bulk_create() to insert objs one batch at a time.
+        """
+        if ignore_conflicts and not connections[self.db].features.supports_ignore_conflicts:
+            raise NotSupportedError('This database backend does not support ignoring conflicts.')
+        ops = connections[self.db].ops
+        batch_size = (batch_size or max(ops.bulk_batch_size(fields, objs), 1))
+        inserted_ids = []
+        bulk_return = connections[self.db].features.can_return_ids_from_bulk_insert
+        for item in [objs[i:i + batch_size] for i in range(0, len(objs), batch_size)]:
+            if bulk_return and not ignore_conflicts:
+                inserted_id = self._insert(
+                    item, fields=fields, using=self.db, return_id=True,
+                    ignore_conflicts=ignore_conflicts,
+                )
+                if isinstance(inserted_id, list):
+                    inserted_ids.extend(inserted_id)
+                else:
+                    inserted_ids.append(inserted_id)
+            else:
+                self._insert(item, fields=fields, using=self.db, ignore_conflicts=ignore_conflicts)
+        return inserted_ids
+
+    def bulk_create(self, objs, batch_size=None, ignore_conflicts=False):
+        assert batch_size is None or batch_size > 0
+
+        connection = connections[self.db]
+        opts = self.model._meta
+        print(self.model)
+
+        # Check that the parents share the same concrete model with the our
+        # model to detect the inheritance pattern ConcreteGrandParent ->
+        # MultiTableParent -> ProxyChild. Simply checking self.model._meta.proxy
+        # would not identify that case as involving multiple tables.
+        fields = [*opts.local_concrete_fields]
+        next_concrete_models = []
+        for parent in self.model._meta.get_parent_list():
+            if parent._meta.concrete_model is not self.model._meta.concrete_model:
+                next_concrete_models.append(parent)
+            else:
+                fields.extend(parent._meta.local_concrete_fields)
+
+        if not connection.features.can_return_ids_from_bulk_insert and next_concrete_models:
+            raise NotSupportedError(
+                'Bulk create a multi-table inherited model is not supported '
+                'on this database backend.'
+            )
+
+        if not objs:
+            return objs
+        self._for_write = True
+        objs = list(objs)
+        self._populate_pk_values(objs)
+        with transaction.atomic(using=self.db, savepoint=False):
+            objs_with_pk, objs_without_pk = partition(lambda o: o.pk is None, objs)
+            if objs_with_pk:
+                self._batched_insert(objs_with_pk, fields, batch_size, ignore_conflicts=ignore_conflicts)
+                for obj_with_pk in objs_with_pk:
+                    obj_with_pk._state.adding = False
+                    obj_with_pk._state.db = self.db
+        if objs_without_pk:
+            if next_concrete_models:
+                for next_concrete_model in next_concrete_models:
+                    print(next_concrete_model)
+                    # Recursively bulk insert parent objects.
+                    parent_objs = []
+                    for obj_without_pk in objs_without_pk:
+                        parent_fields = {}
+                        for f in next_concrete_model._meta.local_concrete_fields:
+                            parent_fields[f.attname] = getattr(obj_without_pk, f.attname)
+                        parent_obj = next_concrete_model(**parent_fields)
+                        parent_objs.append(parent_obj)
+                    parent_objs = next_concrete_model._default_manager.bulk_create(
+                        parent_objs, batch_size=batch_size, ignore_conflicts=ignore_conflicts
+                    )
+                    parent_field = opts.get_ancestor_link(next_concrete_model)
+                    for obj_without_pk, parent_obj in zip(objs_without_pk, parent_objs):
+                        setattr(obj_without_pk, parent_field.name, parent_obj)
+                ids = self._batched_insert(
+                    objs_without_pk, fields, batch_size, ignore_conflicts=ignore_conflicts,
+                )
+                for obj_without_pk, pk in zip(objs_without_pk, ids):
+                    obj_without_pk.pk = pk
+                    obj_without_pk._state.adding = False
+                    obj_without_pk._state.db = self.db
+            else:
+                fields = [f for f in fields if not isinstance(f, models.AutoField)]
+                ids = self._batched_insert(objs_without_pk, fields, batch_size, ignore_conflicts=ignore_conflicts)
+                if connection.features.can_return_ids_from_bulk_insert and not ignore_conflicts:
+                    assert len(ids) == len(objs_without_pk)
+                for obj_without_pk, pk in zip(objs_without_pk, ids):
+                    obj_without_pk.pk = pk
+                    obj_without_pk._state.adding = False
+                    obj_without_pk._state.db = self.db
+
+        return objs
+
     def bulk_get_or_create(self, objs, batch_size=None):
         """
         Insert the list of objects into the database and get existing objects from the database.
@@ -79,7 +183,7 @@ class BulkCreateManager(models.Manager):
         objs = list(objs)
         try:
             with transaction.atomic():
-                return super().bulk_create(objs, batch_size=batch_size)
+                return self.bulk_create(objs, batch_size=batch_size)
         except IntegrityError:
             for i in range(len(objs)):
                 try:
