@@ -83,25 +83,23 @@ class ContentSaver(Stage):
             The coroutine for this stage.
         """
         async for batch in self.batches():
+            d_content_bulk_by_type = defaultdict(list)
             content_artifact_bulk = []
             with transaction.atomic():
                 await self._pre_save(batch)
-
+                # import pydevd_pycharm
+                # pydevd_pycharm.settrace('localhost', port=3013, stdoutToServer=True, stderrToServer=True)
                 for d_content in batch:
                     # Are we saving to the database for the first time?
                     content_already_saved = not d_content.content._state.adding
                     if not content_already_saved:
-                        try:
-                            with transaction.atomic():
-                                d_content.content.save()
-                        except IntegrityError as e:
-                            try:
-                                d_content.content = d_content.content.__class__.objects.get(
-                                    d_content.content.q()
-                                )
-                            except ObjectDoesNotExist:
-                                raise e
-                            continue
+                        model_type = type(d_content.content)
+                        d_content_bulk_by_type[model_type].append(d_content)
+
+                for model, d_content_bulk in d_content_bulk_by_type.items():
+                    content_objs = model.objects.bulk_get_or_create([d.content for d in d_content_bulk])
+                    for i, d_content in enumerate(d_content_bulk):
+                        d_content.content = content_objs[i]
                         for d_artifact in d_content.d_artifacts:
                             if not d_artifact.artifact._state.adding:
                                 artifact = d_artifact.artifact
@@ -114,6 +112,7 @@ class ContentSaver(Stage):
                                 relative_path=d_artifact.relative_path,
                             )
                             content_artifact_bulk.append(content_artifact)
+
                 ContentArtifact.objects.bulk_get_or_create(content_artifact_bulk)
                 await self._post_save(batch)
             for declarative_content in batch:

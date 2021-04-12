@@ -92,8 +92,6 @@ class BulkCreateManager(models.Manager):
 
         connection = connections[self.db]
         opts = self.model._meta
-        print(self.model)
-
         # Check that the parents share the same concrete model with the our
         # model to detect the inheritance pattern ConcreteGrandParent ->
         # MultiTableParent -> ProxyChild. Simply checking self.model._meta.proxy
@@ -127,7 +125,6 @@ class BulkCreateManager(models.Manager):
         if objs_without_pk:
             if next_concrete_models:
                 for next_concrete_model in next_concrete_models:
-                    print(next_concrete_model)
                     # Recursively bulk insert parent objects.
                     parent_objs = []
                     for obj_without_pk in objs_without_pk:
