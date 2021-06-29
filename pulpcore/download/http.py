@@ -211,7 +211,7 @@ class HttpDownloader(BaseDownloader):
             if not chunk:
                 await self.finalize()
                 break  # the download is done
-            await self.handle_data(chunk)
+            await self.handle_data(chunk, response.content.at_eof())
         return DownloadResult(
             path=self.path,
             artifact_attributes=self.artifact_attributes,

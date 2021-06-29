@@ -122,7 +122,7 @@ class BaseDownloader:
             self._writer = tempfile.NamedTemporaryFile(dir=os.getcwd(), delete=False)
             self.path = self._writer.name
 
-    async def handle_data(self, data):
+    async def handle_data(self, data, eof=None):
         """
         A coroutine that writes data to the file object and compute its digests.
 
@@ -133,6 +133,7 @@ class BaseDownloader:
 
         Args:
             data (bytes): The data to be handled by the downloader.
+            eof (bool): A bool (or None if not implemented) that says this is the last chunk.
         """
         self._ensure_writer_has_open_file()
         self._writer.write(data)

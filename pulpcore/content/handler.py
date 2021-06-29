@@ -753,6 +753,7 @@ class Handler:
             return remote_artifact.remote.cast()
 
         remote = await loop.run_in_executor(None, cast_remote_blocking)
+        last_chunk = None
 
         async def handle_headers(headers):
             for name, value in headers.items():
@@ -761,10 +762,14 @@ class Handler:
                 response.headers[name] = value
             await response.prepare(request)
 
-        async def handle_data(data):
-            await response.write(data)
+        async def handle_data(data, eof=None):
+            nonlocal last_chunk
+            if not eof:
+                await response.write(data)
+            else:
+                last_chunk = data
             if remote.policy != Remote.STREAMED:
-                await original_handle_data(data)
+                await original_handle_data(data, eof)
 
         async def finalize():
             if remote.policy != Remote.STREAMED:
@@ -785,7 +790,13 @@ class Handler:
                 self._save_artifact(download_result, remote_artifact)
 
             await loop.run_in_executor(None, save_artifact_blocking)
+            log.info("Running code after the artifact save")
+        if last_chunk is not None:
+            log.info("Last chunk is not None")
+            await response.write(last_chunk)
+            log.info("Last chunk written")
         await response.write_eof()
+        log.info("Running code after the write_eof")
 
         if response.status == 404:
             raise HTTPNotFound()
