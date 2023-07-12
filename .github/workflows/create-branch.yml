@@ -76,7 +76,8 @@ jobs:
         run: |
           find CHANGES -type f -regex ".*\.\(bugfix\|doc\|feature\|misc\|deprecation\|removal\)" -exec git rm {} +
 
-      - uses: actions/checkout@v3
+      - name: Checkout plugin template
+        uses: actions/checkout@v3
         if: "$inputs.update_ci_branches" != "none"
         with:
           repository: pulp/plugin_template
