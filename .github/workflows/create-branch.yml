@@ -17,11 +17,11 @@ on:
         description: "Behavior for updating ci_update_branches"
         required: true
         type: choice
-        default: none
+        default: "none"
         options:
-          - append-version
-          - replace-previous-version
-          - none
+          - "append-version"
+          - "replace-previous-version"
+          - "none"
 
 env:
   RELEASE_WORKFLOW: true
