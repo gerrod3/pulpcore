@@ -78,14 +78,14 @@ jobs:
 
       - name: Checkout plugin template
         uses: actions/checkout@v3
-        if: "$inputs.update_ci_branches" != "none"
+        if: ${{ "$inputs.update_ci_branches" != "none" }}
         with:
           repository: pulp/plugin_template
           path: plugin_template
           fetch-depth: 0
 
       - name: Update CI branches in template_config
-        if: "$inputs.update_ci_branches" != "none"
+        if: ${{ "$inputs.update_ci_branches" != "none" }}
         working-directory: plugin_template
         run: |
           ARGS="--add-version-ci-update-branches ${{ inputs.name }}"
