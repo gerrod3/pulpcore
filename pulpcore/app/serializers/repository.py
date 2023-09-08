@@ -4,6 +4,7 @@ from urllib.parse import urlparse
 
 from rest_framework import fields, serializers
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
+from drf_spectacular.utils import extend_schema_field
 
 from pulpcore.app import models, settings
 from pulpcore.app.serializers import (
@@ -49,6 +50,18 @@ class RepositorySerializer(ModelSerializer):
         required=False,
         allow_null=True,
     )
+    disk_size = serializers.SerializerMethodField(
+        help_text=_(
+            "Approximate size on disk of all artifacts in the repository across all its versions."
+        ),
+    )
+
+    @extend_schema_field(serializers.IntegerField(read_only=True, allow_null=True))
+    def get_disk_size(self, obj):
+        if view := self.context.get("view", None):
+            if getattr(view, "action", "") == "retrieve":
+                return obj.disk_size
+        return None
 
     def validate_remote(self, value):
         if value and type(value) not in self.Meta.model.REMOTE_TYPES:
@@ -66,6 +79,7 @@ class RepositorySerializer(ModelSerializer):
             "latest_version_href",
             "name",
             "description",
+            "disk_size",
             "retain_repo_versions",
             "remote",
         )
@@ -420,12 +434,25 @@ class RepositoryVersionSerializer(ModelSerializer, NestedHyperlinkedModelSeriali
         source="*",
         read_only=True,
     )
+    disk_size = serializers.SerializerMethodField(
+        help_text=_(
+            "Approximate size on disk of all artifacts in the repository version."
+        ),
+    )
+
+    @extend_schema_field(serializers.IntegerField(read_only=True, allow_null=True))
+    def get_disk_size(self, obj):
+        if view := self.context.get("view", None):
+            if getattr(view, "action", "") == "retrieve":
+                return obj.disk_size
+        return None
 
     class Meta:
         model = models.RepositoryVersion
         fields = ModelSerializer.Meta.fields + (
             "pulp_href",
             "number",
+            "disk_size",
             "repository",
             "base_version",
             "content_summary",

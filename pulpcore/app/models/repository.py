@@ -82,6 +82,21 @@ class Repository(MasterModel):
         unique_together = ("name", "pulp_domain")
         verbose_name_plural = "repositories"
 
+    @property
+    def disk_size(self):
+        """Returns the approximate size on disk for all artifacts stored across all versions."""
+        all_content = (
+            RepositoryContent.objects.filter(repository=self)
+            .distinct("content")
+            .values_list("content")
+        )
+        return (
+            Artifact.objects.filter(content__pk__in=all_content)
+            .distinct()
+            .aggregate(size=models.Sum("size"))["size"]
+            or 0
+        )
+
     def on_new_version(self, version):
         """Called after a new repository version has been created.
 
@@ -794,6 +809,11 @@ class RepositoryVersion(BaseModel):
             django.db.models.QuerySet: The artifacts that are contained within this version.
         """
         return self.repository.cast().artifacts_for_version(self)
+
+    @property
+    def disk_size(self):
+        """Returns the size on disk of all the artifacts in this repository version."""
+        return self.artifacts.distinct().aggregate(size=models.Sum("size"))["size"] or 0
 
     def added(self, base_version=None):
         """
