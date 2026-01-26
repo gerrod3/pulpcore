@@ -80,6 +80,54 @@ kafka = [
 diagnostics = ["pyinstrument~=5.0", "memray~=1.17"]
 uvloop = ["uvloop>=0.20,<0.23"]
 
+[dependency-groups]
+lint = [
+  "black==24.3.0",
+  "bump-my-version",
+  "check-manifest",
+  "flake8",
+  "flake8-black",
+  "packaging",
+  "yamllint",
+]
+dev = [
+  "django-crispy-forms",
+  "django-extensions",
+  "ipython",
+  "pyinstrument",
+  "ipdb",
+  "epdb",
+  "py-spy",
+  "pydevd_pycharm",
+]
+unittest = [
+  "mock",
+  "aiotools",
+  "pytest<10",
+  "pytest-django",
+  "pytest-asyncio",
+  "pytest-aiohttp",
+  "pytest-redis<3.1.0", # https://github.com/ClearcodeHQ/pytest-redis/issues/679
+]
+functest = [
+  "pytest<10",
+  "pytest-custom_exit_code",
+  "pytest-xdist",
+  "python-gnupg",
+  "proxy.py~=2.4.10",
+  "trustme~=1.2.1",
+
+  # pulp_file tests
+  "beautifulsoup4",
+  "pytest-timeout",
+]
+ci = [
+  "botocore @git+https://github.com/gerrod3/botocore.git@fix-100-continue",
+  "django-storages[boto3]==1.14.6",
+  "django-storages[google]==1.14.6",
+  "django-storages[azure]==1.14.6",
+]
+
 [project.urls]
 Homepage = "https://pulpproject.org"
 Documentation = "https://pulpproject.org"

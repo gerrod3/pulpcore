@@ -1,0 +1,61 @@
+FROM {{ ci_base | default('pulp/pulp-ci-centos9:latest') }}
+
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+RUN echo 'eval "$(uv generate-shell-completion bash)"' >> ~/.bashrc
+ENV UV_SYSTEM_PYTHON=1 UV_LINK_MODE=copy
+
+{%- if python_version is defined and python_version != '3.11' %}
+RUN uv python install --default $python_version
+{% endif %}
+
+# Install dependencies separate from source for better caching
+RUN --mount=type=cache,target=/root/.cache/uv \
+{%- for item in plugins %}
+    --mount=from=plugins,source={{ item.name }}/{{ item.requirement | default('pyproject.toml') }},target={{ item.name }}/{{ item.requirement | default('pyproject.toml') }} \
+{%- endfor %}
+    uv pip install \
+{%- for item in dependency_groups | default([]) %}
+      --group {{ item }} \
+{%- endfor %}
+{%- for item in plugins %}
+      -r {{ item.name }}/{{ item.requirement | default('pyproject.toml') }} {% if not loop.last %}\{% endif %}
+{%- endfor %}
+
+# Add source directories to container
+{%- for item in plugins %}
+COPY --from=plugins {{ item.name }} src/{{ item.name }}
+{%- endfor %}
+
+# Now install the plugins
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install \
+{%- for item in plugins %}
+      {{ item.source | default('-e src/' + item.name) }} {% if not loop.last %}\{% endif %}
+{%- endfor %}
+
+{% for item in extra_files | default([]) %}
+ADD {{ item.origin }} {{ item.destination }}
+{%- endfor %}
+
+{%- if pulp_env is defined and pulp_env %}
+{% for key, value in pulp_env.items() %}
+ENV {{ key | upper }}={{ value }}
+{%- endfor %}
+{% endif %}
+
+{%- if pulp_scenario_env is defined and pulp_scenario_env %}
+{%- for key, value in pulp_scenario_env.items() %}
+ENV {{ key | upper }}={{ value }}
+{%- endfor %}
+{% endif %}
+
+USER pulp:pulp
+RUN PULP_STATIC_ROOT=/var/lib/operator/static/ PULP_CONTENT_ORIGIN=localhost \
+       /usr/local/bin/pulpcore-manager collectstatic --clear --noinput --link
+USER root:root
+
+{% for item in plugins %}
+RUN export plugin_path="$(uv pip show {{ item.name }} | sed -n -e 's/Location: //p')/{{ item.name }}" && \
+    ln $plugin_path/app/webserver_snippets/nginx.conf /etc/nginx/pulp/{{ item.name }}.conf || true
+{%- endfor %}
