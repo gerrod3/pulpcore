@@ -1,3 +1,4 @@
+project_name: pulpcore_dev
 plugins:
   - name: pulpcore
   - name: pulp_python
