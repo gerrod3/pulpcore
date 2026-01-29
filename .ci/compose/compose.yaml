@@ -1,0 +1,26 @@
+name: "pulpcore.dev"
+
+services:
+  pulp:
+    build:
+      context: ../..
+      additional_contexts:
+        - plugins=${PLUGIN_SRC}
+      dockerfile: "./dev.Containerfile"
+    image: "localhost/pulp/dev:${COMPOSE_PROJECT_NAME}"
+    ports:
+      - "80:5003"
+
+    volumes:
+      - "${PLUGIN_SRC}:/src:z"
+      - "pulp:/var/lib/pulp"
+      - "redis_data:/data"
+      - "pg_data:/var/lib/pgsql"
+
+volumes:
+  pulp:
+    name: "${COMPOSE_PROJECT_NAME}_pulp"
+  pg_data:
+    name: "${COMPOSE_PROJECT_NAME}_pg_data"
+  redis_data:
+    name: "${COMPOSE_PROJECT_NAME}_redis_data"

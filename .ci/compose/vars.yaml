@@ -1,6 +1,5 @@
 project_name: pulpcore_dev
 plugins:
-  - name: pulpcore
   - name: pulp_python
   - name: pulp_container
 dependency_groups:
