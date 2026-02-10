@@ -1,1 +1,15 @@
-
+# All the dependencies for the build & test CI workflows.
+build
+packaging
+towncrier
+twine
+wheel
+httpie
+docker # prob not used
+netaddr # not sure
+boto3 # not sure
+ansible~=10.3.0 # gonna be replaced
+mkdocs
+jq
+jsonpatch # maybe not needed after changes
+bump-my-version

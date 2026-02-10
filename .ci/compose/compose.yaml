@@ -1,18 +1,30 @@
-name: "pulpcore.dev"
+name: "pulpcore.CI"
 
 services:
   pulp:
     build:
       context: ../..
-      additional_contexts:
-        - plugins=${PLUGIN_SRC}
-      dockerfile: "./dev.Containerfile"
-    image: "localhost/pulp/dev:${COMPOSE_PROJECT_NAME}"
+      dockerfile: ".ci/compose/Containerfile"
+      args:
+        - EXTRA_INSTALL=${EXTRA_INSTALL}
+        - PACKAGE_SRC=${PACKAGE_SRC}
+        - CLIENT_SRC=${CLIENT_SRC}
+        - FULL_INSTALL=${FULL_INSTALL}
+        - TEST=${TEST}
+    image: "localhost/pulp-ci:${COMPOSE_PROJECT_NAME}"
     ports:
-      - "80:5003"
+      - "5003:443"
+    healthcheck:
+      test: "curl -f http://localhost:24817${PULP_API_ROOT:-/pulp/}api/v3/status/"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      PULP_WORKERS: "4"
+      PULP_HTTPS: "true"
+      PULP_CA_BUNDLE: "/etc/pulp/certs/pulp_webserver.crt"
 
     volumes:
-      - "${PLUGIN_SRC}:/src:z"
       - "pulp:/var/lib/pulp"
       - "redis_data:/data"
       - "pg_data:/var/lib/pgsql"

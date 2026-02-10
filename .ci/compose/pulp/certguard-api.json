@@ -1,0 +1,1409 @@
+{
+    "openapi": "3.1.1",
+    "info": {
+        "title": "Pulp 3 API",
+        "version": "v3",
+        "description": "Fetch, Upload, Organize, and Distribute Software Packages",
+        "contact": {
+            "name": "Pulp Team",
+            "email": "pulp-list@redhat.com",
+            "url": "https://pulpproject.org"
+        },
+        "license": {
+            "name": "GNU General Public License v2.0 or later",
+            "identifier": "GPL-2.0-or-later"
+        },
+        "x-logo": {
+            "url": "https://pulpproject.org/pulp-docs/docs/assets/pulp_logo_icon.svg"
+        },
+        "x-pulp-app-versions": {
+            "certguard": "3.104.0.dev",
+            "core": "3.104.0.dev"
+        },
+        "x-pulp-domain-enabled": false
+    },
+    "paths": {
+        "/hey/there/api/v3/contentguards/certguard/rhsm/": {
+            "get": {
+                "operationId": "list",
+                "description": "RHSMCertGuard API Viewsets.",
+                "summary": "List rhsm cert guards",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Task-Diagnostics",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "List of profilers to use on tasks."
+                    },
+                    {
+                        "name": "limit",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter results where name matches value"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name__contains",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter results where name contains value"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name__icontains",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter results where name contains value"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name__iexact",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter results where name matches value"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name__in",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "Filter results where name is in a comma-separated list of values",
+                        "explode": false,
+                        "style": "form"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name__iregex",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter results where name matches regex value"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name__istartswith",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter results where name starts with value"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name__regex",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter results where name matches regex value"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name__startswith",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter results where name starts with value"
+                    },
+                    {
+                        "name": "offset",
+                        "required": false,
+                        "in": "query",
+                        "description": "The initial index from which to return the results.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "ordering",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "-description",
+                                    "-name",
+                                    "-pk",
+                                    "-pulp_created",
+                                    "-pulp_id",
+                                    "-pulp_last_updated",
+                                    "-pulp_type",
+                                    "description",
+                                    "name",
+                                    "pk",
+                                    "pulp_created",
+                                    "pulp_id",
+                                    "pulp_last_updated",
+                                    "pulp_type"
+                                ]
+                            }
+                        },
+                        "description": "Ordering\n\n* `pulp_id` - Pulp id\n* `-pulp_id` - Pulp id (descending)\n* `pulp_created` - Pulp created\n* `-pulp_created` - Pulp created (descending)\n* `pulp_last_updated` - Pulp last updated\n* `-pulp_last_updated` - Pulp last updated (descending)\n* `pulp_type` - Pulp type\n* `-pulp_type` - Pulp type (descending)\n* `name` - Name\n* `-name` - Name (descending)\n* `description` - Description\n* `-description` - Description (descending)\n* `pk` - Pk\n* `-pk` - Pk (descending)",
+                        "explode": false,
+                        "style": "form"
+                    },
+                    {
+                        "in": "query",
+                        "name": "prn__in",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "Multiple values may be separated by commas.",
+                        "explode": false,
+                        "style": "form"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pulp_href__in",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "Multiple values may be separated by commas.",
+                        "explode": false,
+                        "style": "form"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pulp_id__in",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "format": "uuid"
+                            }
+                        },
+                        "description": "Multiple values may be separated by commas.",
+                        "explode": false,
+                        "style": "form"
+                    },
+                    {
+                        "in": "query",
+                        "name": "q",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter results by using NOT, AND and OR operations on other filters"
+                    },
+                    {
+                        "in": "query",
+                        "name": "fields",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "A list of fields to include in the response."
+                    },
+                    {
+                        "in": "query",
+                        "name": "exclude_fields",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "A list of fields to exclude from the response."
+                    }
+                ],
+                "tags": [
+                    "Contentguards: Rhsm"
+                ],
+                "security": [
+                    {
+                        "basicAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Paginatedcertguard.RHSMCertGuardResponseList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "create",
+                "description": "RHSMCertGuard API Viewsets.",
+                "summary": "Create a rhsm cert guard",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Task-Diagnostics",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "List of profilers to use on tasks."
+                    }
+                ],
+                "tags": [
+                    "Contentguards: Rhsm"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/certguard.RHSMCertGuard"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/certguard.RHSMCertGuard"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/certguard.RHSMCertGuard"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "basicAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/certguard.RHSMCertGuardResponse"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "{certguard_r_h_s_m_cert_guard_href}": {
+            "get": {
+                "operationId": "read",
+                "description": "RHSMCertGuard API Viewsets.",
+                "summary": "Inspect a rhsm cert guard",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Task-Diagnostics",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "List of profilers to use on tasks."
+                    },
+                    {
+                        "in": "path",
+                        "name": "certguard_r_h_s_m_cert_guard_href",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "fields",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "A list of fields to include in the response."
+                    },
+                    {
+                        "in": "query",
+                        "name": "exclude_fields",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "A list of fields to exclude from the response."
+                    }
+                ],
+                "tags": [
+                    "Contentguards: Rhsm"
+                ],
+                "security": [
+                    {
+                        "basicAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/certguard.RHSMCertGuardResponse"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "update",
+                "description": "RHSMCertGuard API Viewsets.",
+                "summary": "Update a rhsm cert guard",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Task-Diagnostics",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "List of profilers to use on tasks."
+                    },
+                    {
+                        "in": "path",
+                        "name": "certguard_r_h_s_m_cert_guard_href",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Contentguards: Rhsm"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/certguard.RHSMCertGuard"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/certguard.RHSMCertGuard"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/certguard.RHSMCertGuard"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "basicAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/certguard.RHSMCertGuardResponse"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "partial_update",
+                "description": "RHSMCertGuard API Viewsets.",
+                "summary": "Update a rhsm cert guard",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Task-Diagnostics",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "List of profilers to use on tasks."
+                    },
+                    {
+                        "in": "path",
+                        "name": "certguard_r_h_s_m_cert_guard_href",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Contentguards: Rhsm"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Patchedcertguard.RHSMCertGuard"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Patchedcertguard.RHSMCertGuard"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Patchedcertguard.RHSMCertGuard"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "basicAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/certguard.RHSMCertGuardResponse"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "delete",
+                "description": "RHSMCertGuard API Viewsets.",
+                "summary": "Delete a rhsm cert guard",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Task-Diagnostics",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "List of profilers to use on tasks."
+                    },
+                    {
+                        "in": "path",
+                        "name": "certguard_r_h_s_m_cert_guard_href",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Contentguards: Rhsm"
+                ],
+                "security": [
+                    {
+                        "basicAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/hey/there/api/v3/contentguards/certguard/x509/": {
+            "get": {
+                "operationId": "list",
+                "description": "X509CertGuard API Viewsets.",
+                "summary": "List x509 cert guards",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Task-Diagnostics",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "List of profilers to use on tasks."
+                    },
+                    {
+                        "name": "limit",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter results where name matches value"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name__contains",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter results where name contains value"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name__icontains",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter results where name contains value"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name__iexact",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter results where name matches value"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name__in",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "Filter results where name is in a comma-separated list of values",
+                        "explode": false,
+                        "style": "form"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name__iregex",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter results where name matches regex value"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name__istartswith",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter results where name starts with value"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name__regex",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter results where name matches regex value"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name__startswith",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter results where name starts with value"
+                    },
+                    {
+                        "name": "offset",
+                        "required": false,
+                        "in": "query",
+                        "description": "The initial index from which to return the results.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "ordering",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "-description",
+                                    "-name",
+                                    "-pk",
+                                    "-pulp_created",
+                                    "-pulp_id",
+                                    "-pulp_last_updated",
+                                    "-pulp_type",
+                                    "description",
+                                    "name",
+                                    "pk",
+                                    "pulp_created",
+                                    "pulp_id",
+                                    "pulp_last_updated",
+                                    "pulp_type"
+                                ]
+                            }
+                        },
+                        "description": "Ordering\n\n* `pulp_id` - Pulp id\n* `-pulp_id` - Pulp id (descending)\n* `pulp_created` - Pulp created\n* `-pulp_created` - Pulp created (descending)\n* `pulp_last_updated` - Pulp last updated\n* `-pulp_last_updated` - Pulp last updated (descending)\n* `pulp_type` - Pulp type\n* `-pulp_type` - Pulp type (descending)\n* `name` - Name\n* `-name` - Name (descending)\n* `description` - Description\n* `-description` - Description (descending)\n* `pk` - Pk\n* `-pk` - Pk (descending)",
+                        "explode": false,
+                        "style": "form"
+                    },
+                    {
+                        "in": "query",
+                        "name": "prn__in",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "Multiple values may be separated by commas.",
+                        "explode": false,
+                        "style": "form"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pulp_href__in",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "Multiple values may be separated by commas.",
+                        "explode": false,
+                        "style": "form"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pulp_id__in",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "format": "uuid"
+                            }
+                        },
+                        "description": "Multiple values may be separated by commas.",
+                        "explode": false,
+                        "style": "form"
+                    },
+                    {
+                        "in": "query",
+                        "name": "q",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter results by using NOT, AND and OR operations on other filters"
+                    },
+                    {
+                        "in": "query",
+                        "name": "fields",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "A list of fields to include in the response."
+                    },
+                    {
+                        "in": "query",
+                        "name": "exclude_fields",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "A list of fields to exclude from the response."
+                    }
+                ],
+                "tags": [
+                    "Contentguards: X509"
+                ],
+                "security": [
+                    {
+                        "basicAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Paginatedcertguard.X509CertGuardResponseList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "create",
+                "description": "X509CertGuard API Viewsets.",
+                "summary": "Create a x509 cert guard",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Task-Diagnostics",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "List of profilers to use on tasks."
+                    }
+                ],
+                "tags": [
+                    "Contentguards: X509"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/certguard.X509CertGuard"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/certguard.X509CertGuard"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/certguard.X509CertGuard"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "basicAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/certguard.X509CertGuardResponse"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "{certguard_x509_cert_guard_href}": {
+            "get": {
+                "operationId": "read",
+                "description": "X509CertGuard API Viewsets.",
+                "summary": "Inspect a x509 cert guard",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Task-Diagnostics",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "List of profilers to use on tasks."
+                    },
+                    {
+                        "in": "path",
+                        "name": "certguard_x509_cert_guard_href",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "fields",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "A list of fields to include in the response."
+                    },
+                    {
+                        "in": "query",
+                        "name": "exclude_fields",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "A list of fields to exclude from the response."
+                    }
+                ],
+                "tags": [
+                    "Contentguards: X509"
+                ],
+                "security": [
+                    {
+                        "basicAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/certguard.X509CertGuardResponse"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "update",
+                "description": "X509CertGuard API Viewsets.",
+                "summary": "Update a x509 cert guard",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Task-Diagnostics",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "List of profilers to use on tasks."
+                    },
+                    {
+                        "in": "path",
+                        "name": "certguard_x509_cert_guard_href",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Contentguards: X509"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/certguard.X509CertGuard"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/certguard.X509CertGuard"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/certguard.X509CertGuard"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "basicAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/certguard.X509CertGuardResponse"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "partial_update",
+                "description": "X509CertGuard API Viewsets.",
+                "summary": "Update a x509 cert guard",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Task-Diagnostics",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "List of profilers to use on tasks."
+                    },
+                    {
+                        "in": "path",
+                        "name": "certguard_x509_cert_guard_href",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Contentguards: X509"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Patchedcertguard.X509CertGuard"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Patchedcertguard.X509CertGuard"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Patchedcertguard.X509CertGuard"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "basicAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/certguard.X509CertGuardResponse"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "delete",
+                "description": "X509CertGuard API Viewsets.",
+                "summary": "Delete a x509 cert guard",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Task-Diagnostics",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "List of profilers to use on tasks."
+                    },
+                    {
+                        "in": "path",
+                        "name": "certguard_x509_cert_guard_href",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Contentguards: X509"
+                ],
+                "security": [
+                    {
+                        "basicAuth": []
+                    },
+                    {
+                        "cookieAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Paginatedcertguard.RHSMCertGuardResponseList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?offset=400&limit=100"
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?offset=200&limit=100"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/certguard.RHSMCertGuardResponse"
+                        }
+                    }
+                }
+            },
+            "Paginatedcertguard.X509CertGuardResponseList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?offset=400&limit=100"
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?offset=200&limit=100"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/certguard.X509CertGuardResponse"
+                        }
+                    }
+                }
+            },
+            "Patchedcertguard.RHSMCertGuard": {
+                "type": "object",
+                "description": "RHSM Content Guard Serializer.",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "The unique name."
+                    },
+                    "description": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "minLength": 1,
+                        "description": "An optional description."
+                    },
+                    "ca_certificate": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "A Certificate Authority (CA) certificate (or a bundle thereof) used to verify client-certificate authenticity."
+                    }
+                }
+            },
+            "Patchedcertguard.X509CertGuard": {
+                "type": "object",
+                "description": "X.509 Content Guard Serializer.",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "The unique name."
+                    },
+                    "description": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "minLength": 1,
+                        "description": "An optional description."
+                    },
+                    "ca_certificate": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "A Certificate Authority (CA) certificate (or a bundle thereof) used to verify client-certificate authenticity."
+                    }
+                }
+            },
+            "certguard.RHSMCertGuard": {
+                "type": "object",
+                "description": "RHSM Content Guard Serializer.",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "The unique name."
+                    },
+                    "description": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "minLength": 1,
+                        "description": "An optional description."
+                    },
+                    "ca_certificate": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "A Certificate Authority (CA) certificate (or a bundle thereof) used to verify client-certificate authenticity."
+                    }
+                },
+                "required": [
+                    "ca_certificate",
+                    "name"
+                ]
+            },
+            "certguard.RHSMCertGuardResponse": {
+                "type": "object",
+                "description": "RHSM Content Guard Serializer.",
+                "properties": {
+                    "pulp_href": {
+                        "type": "string",
+                        "format": "uri",
+                        "readOnly": true
+                    },
+                    "prn": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "The Pulp Resource Name (PRN)."
+                    },
+                    "pulp_created": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "description": "Timestamp of creation."
+                    },
+                    "pulp_last_updated": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "description": "Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same."
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The unique name."
+                    },
+                    "description": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "An optional description."
+                    },
+                    "ca_certificate": {
+                        "type": "string",
+                        "description": "A Certificate Authority (CA) certificate (or a bundle thereof) used to verify client-certificate authenticity."
+                    }
+                },
+                "required": [
+                    "ca_certificate",
+                    "name"
+                ]
+            },
+            "certguard.X509CertGuard": {
+                "type": "object",
+                "description": "X.509 Content Guard Serializer.",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "The unique name."
+                    },
+                    "description": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "minLength": 1,
+                        "description": "An optional description."
+                    },
+                    "ca_certificate": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "A Certificate Authority (CA) certificate (or a bundle thereof) used to verify client-certificate authenticity."
+                    }
+                },
+                "required": [
+                    "ca_certificate",
+                    "name"
+                ]
+            },
+            "certguard.X509CertGuardResponse": {
+                "type": "object",
+                "description": "X.509 Content Guard Serializer.",
+                "properties": {
+                    "pulp_href": {
+                        "type": "string",
+                        "format": "uri",
+                        "readOnly": true
+                    },
+                    "prn": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "The Pulp Resource Name (PRN)."
+                    },
+                    "pulp_created": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "description": "Timestamp of creation."
+                    },
+                    "pulp_last_updated": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "description": "Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same."
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The unique name."
+                    },
+                    "description": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "An optional description."
+                    },
+                    "ca_certificate": {
+                        "type": "string",
+                        "description": "A Certificate Authority (CA) certificate (or a bundle thereof) used to verify client-certificate authenticity."
+                    }
+                },
+                "required": [
+                    "ca_certificate",
+                    "name"
+                ]
+            }
+        },
+        "securitySchemes": {
+            "basicAuth": {
+                "type": "http",
+                "scheme": "basic"
+            },
+            "cookieAuth": {
+                "type": "apiKey",
+                "in": "cookie",
+                "name": "sessionid"
+            }
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:24817/"
+        }
+    ]
+}
