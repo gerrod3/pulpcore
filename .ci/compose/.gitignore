@@ -1,0 +1,4 @@
+*/pulp_webserver.crt
+*/constraints.txt
+*/*api.json
+*/*_client-*.whl
