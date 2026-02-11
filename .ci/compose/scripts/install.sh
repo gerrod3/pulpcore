@@ -24,7 +24,7 @@ export PULP_API_ROOT="/pulp/"
 
 PLUGIN_VERSION="$(bump-my-version show current_version | tail -n -1 | python -c 'from packaging.version import Version; print(Version(input()))')"
 PACKAGE_WHEEL="pulpcore-${PLUGIN_VERSION}-py3-none-any.whl"
-CLIENT_WHEELS="pulpcore_client-${PLUGIN_VERSION}-py3-none-any.whl"
+CLIENT_WHEELS="pulpcore_client-${PLUGIN_VERSION}-py3-none-any.whl pulp_file_client-${PLUGIN_VERSION}-py3-none-any.whl pulp_certguard_client-${PLUGIN_VERSION}-py3-none-any.whl"
 FULL_INSTALL="${PACKAGE_WHEEL}"
 if [ "$TEST" = "s3" ]; then
   FULL_INSTALL="${FULL_INSTALL}[s3]"
@@ -35,7 +35,9 @@ fi
 FULL_INSTALL="${FULL_INSTALL} ${CLIENT_WHEELS} -r test_requirements.txt -c constraints.txt"
 
 export PACKAGE_SRC="dist/${PACKAGE_WHEEL}"
-export CLIENT_SRC=".ci/compose/${TEST}/${CLIENT_WHEELS}"
+export CORE_CLIENT_SRC=".ci/compose/${TEST}/pulpcore_client-${PLUGIN_VERSION}-py3-none-any.whl"
+export FILE_CLIENT_SRC=".ci/compose/${TEST}/pulp_file_client-${PLUGIN_VERSION}-py3-none-any.whl"
+export CERTGUARD_CLIENT_SRC=".ci/compose/${TEST}/pulp_certguard_client-${PLUGIN_VERSION}-py3-none-any.whl"
 export FULL_INSTALL="${FULL_INSTALL}"
 
 # EXTRA_INSTALL comment

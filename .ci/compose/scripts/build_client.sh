@@ -40,36 +40,37 @@ fi
 popd
 # # rm -rf "pulp_file-client"
 
-# ./gen-client.sh "${TEST_DIR}/file-api.json" "file" ${TYPE} "pulp_file"
+./gen-client.sh "${TEST_DIR}/file-api.json" "file" ${TYPE} "pulp_file"
 
-# pushd pulp_file-client
-# if [ "$TYPE" = "python" ]; then
-#     python -m build
-#     twine check dist/*
-#     cp dist/* "${TEST_DIR}/"
-# else if [ "$TYPE" = "ruby" ]; then
-#     gem build pulp_file_client
-#     cp "./pulp_file_client-"*".gem" "${TEST_DIR}/"
-# else
-#     echo "Invalid type: $TYPE"
-#     exit 1
-# popd
+pushd pulp_file-client
+if [ "$TYPE" = "python" ]; then
+    python -m build
+    twine check dist/*
+    cp dist/* "${TEST_DIR}/"
+elif [ "$TYPE" = "ruby" ]; then
+    gem build pulp_file_client
+    cp "./pulp_file_client-"*".gem" "${TEST_DIR}/"
+else
+    echo "Invalid type: $TYPE"
+    exit 1
+fi
+popd
 # # rm -rf "pulp_certguard-client"
 
-# ./gen-client.sh "${TEST_DIR}/certguard-api.json" "certguard" ${TYPE} "pulp_certguard"
+./gen-client.sh "${TEST_DIR}/certguard-api.json" "certguard" ${TYPE} "pulp_certguard"
 
-# pushd pulp_certguard-client
-# if [ "$TYPE" = "python" ]; then
-#     python -m build
-#     twine check dist/*
-#     cp dist/* "${TEST_DIR}/"
-# else if [ "$TYPE" = "ruby" ]; then
-#     gem build pulp_certguard_client
-#     cp "./pulp_certguard_client-"*".gem" "${TEST_DIR}/"
-# else
-#     echo "Invalid type: $TYPE"
-#     exit 1
-# fi
-# popd
+pushd pulp_certguard-client
+if [ "$TYPE" = "python" ]; then
+    python -m build
+    twine check dist/*
+    cp dist/* "${TEST_DIR}/"
+elif [ "$TYPE" = "ruby" ]; then
+    gem build pulp_certguard_client
+    cp "./pulp_certguard_client-"*".gem" "${TEST_DIR}/"
+else
+    echo "Invalid type: $TYPE"
+    exit 1
+fi
+popd
 
 popd

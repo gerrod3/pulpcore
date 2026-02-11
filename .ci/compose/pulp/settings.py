@@ -1,8 +1,8 @@
-allowed_export_paths =["/tmp"]
-allowed_import_paths = ["/tmp"]
-content_path_prefix = "/somewhere/else/"
-csrf_trusted_origins = ["https://pulp:443"]
-orphan_protection_time = 0
-task_protection_time = 10
-tmpfile_protection_time = 10
-upload_protection_time = 10
+ALLOWED_EXPORT_PATHS =["/tmp"]
+ALLOWED_IMPORT_PATHS = ["/tmp"]
+CONTENT_PATH_PREFIX = "/somewhere/else/"
+CSRF_TRUSTED_ORIGINS = ["https://pulp:443"]
+ORPHAN_PROTECTION_TIME = 0
+TASK_PROTECTION_TIME = 10
+TMPFILE_PROTECTION_TIME = 10
+UPLOAD_PROTECTION_TIME = 10

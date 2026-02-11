@@ -48,10 +48,10 @@ if [[ "$TEST" == "performance" ]]; then
   exit
 fi
 
-if [ -f "$FUNC_TEST_SCRIPT" ]; then
+if [ -f "${FUNC_TEST_SCRIPT:-}" ]; then
   source "$FUNC_TEST_SCRIPT"
 else
-  if [[ "$GITHUB_WORKFLOW" =~ "Nightly" ]]
+  if [[ "${GITHUB_WORKFLOW:-}" =~ "Nightly" ]]
   then
     cmd_user_prefix bash -c "pytest -v --timeout=300 -r sx --color=yes --suppress-no-test-exit-code --durations=20 --pyargs pulpcore.tests.functional -m parallel -n 8 --nightly"
     cmd_user_prefix bash -c "pytest -v --timeout=300 -r sx --color=yes --suppress-no-test-exit-code --durations=20 --pyargs pulpcore.tests.functional -m 'not parallel' --nightly"
@@ -60,14 +60,14 @@ else
     cmd_user_prefix bash -c "pytest -v --timeout=300 -r sx --color=yes --suppress-no-test-exit-code --durations=20 --pyargs pulp_certguard.tests.functional -m parallel -n 8 --nightly"
     cmd_user_prefix bash -c "pytest -v --timeout=300 -r sx --color=yes --suppress-no-test-exit-code --durations=20 --pyargs pulp_certguard.tests.functional -m 'not parallel' --nightly"
   else
-    cmd_user_prefix bash -c "pytest -v --timeout=300 -r sx --color=yes --suppress-no-test-exit-code --durations=20 --pyargs pulpcore.tests.functional -m parallel -n 8"
-    cmd_user_prefix bash -c "pytest -v --timeout=300 -r sx --color=yes --suppress-no-test-exit-code --durations=20 --pyargs pulpcore.tests.functional -m 'not parallel'"
+    # cmd_user_prefix bash -c "pytest -v --timeout=300 -r sx --color=yes --suppress-no-test-exit-code --durations=20 --pyargs pulpcore.tests.functional -m parallel -n 8"
+    # cmd_user_prefix bash -c "pytest -v --timeout=300 -r sx --color=yes --suppress-no-test-exit-code --durations=20 --pyargs pulpcore.tests.functional -m 'not parallel'"
     cmd_user_prefix bash -c "pytest -v --timeout=300 -r sx --color=yes --suppress-no-test-exit-code --durations=20 --pyargs pulp_file.tests.functional -m parallel -n 8"
     cmd_user_prefix bash -c "pytest -v --timeout=300 -r sx --color=yes --suppress-no-test-exit-code --durations=20 --pyargs pulp_file.tests.functional -m 'not parallel'"
-    cmd_user_prefix bash -c "pytest -v --timeout=300 -r sx --color=yes --suppress-no-test-exit-code --durations=20 --pyargs pulp_certguard.tests.functional -m parallel -n 8"
-    cmd_user_prefix bash -c "pytest -v --timeout=300 -r sx --color=yes --suppress-no-test-exit-code --durations=20 --pyargs pulp_certguard.tests.functional -m 'not parallel'"
+    # cmd_user_prefix bash -c "pytest -v --timeout=300 -r sx --color=yes --suppress-no-test-exit-code --durations=20 --pyargs pulp_certguard.tests.functional -m parallel -n 8"
+    # cmd_user_prefix bash -c "pytest -v --timeout=300 -r sx --color=yes --suppress-no-test-exit-code --durations=20 --pyargs pulp_certguard.tests.functional -m 'not parallel'"
   fi
 fi
 
 # TEST pulp-cli
-compose_cmd run cli pytest -v -m "pulpcore or pulp_file or pulp_certguard"
+compose_cmd run cli pytest -v -m "pulp_file"

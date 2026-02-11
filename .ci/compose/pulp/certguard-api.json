@@ -23,7 +23,7 @@
         "x-pulp-domain-enabled": false
     },
     "paths": {
-        "/hey/there/api/v3/contentguards/certguard/rhsm/": {
+        "/pulp/api/v3/contentguards/certguard/rhsm/": {
             "get": {
                 "operationId": "list",
                 "description": "RHSMCertGuard API Viewsets.",
@@ -574,7 +574,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/contentguards/certguard/x509/": {
+        "/pulp/api/v3/contentguards/certguard/x509/": {
             "get": {
                 "operationId": "list",
                 "description": "X509CertGuard API Viewsets.",

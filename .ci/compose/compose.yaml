@@ -8,7 +8,9 @@ services:
       args:
         - EXTRA_INSTALL=${EXTRA_INSTALL}
         - PACKAGE_SRC=${PACKAGE_SRC}
-        - CLIENT_SRC=${CLIENT_SRC}
+        - CORE_CLIENT_SRC=${CORE_CLIENT_SRC}
+        - FILE_CLIENT_SRC=${FILE_CLIENT_SRC}
+        - CERTGUARD_CLIENT_SRC=${CERTGUARD_CLIENT_SRC}
         - FULL_INSTALL=${FULL_INSTALL}
         - TEST=${TEST}
     image: "localhost/pulp-ci:${COMPOSE_PROJECT_NAME}"
@@ -23,16 +25,3 @@ services:
       PULP_WORKERS: "4"
       PULP_HTTPS: "true"
       PULP_CA_BUNDLE: "/etc/pulp/certs/pulp_webserver.crt"
-
-    volumes:
-      - "pulp:/var/lib/pulp"
-      - "redis_data:/data"
-      - "pg_data:/var/lib/pgsql"
-
-volumes:
-  pulp:
-    name: "${COMPOSE_PROJECT_NAME}_pulp"
-  pg_data:
-    name: "${COMPOSE_PROJECT_NAME}_pg_data"
-  redis_data:
-    name: "${COMPOSE_PROJECT_NAME}_redis_data"

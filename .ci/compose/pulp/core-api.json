@@ -22,7 +22,7 @@
         "x-pulp-domain-enabled": false
     },
     "paths": {
-        "/hey/there/api/v3/access_policies/": {
+        "/pulp/api/v3/access_policies/": {
             "get": {
                 "operationId": "list",
                 "description": "ViewSet for AccessPolicy.",
@@ -532,7 +532,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/artifacts/": {
+        "/pulp/api/v3/artifacts/": {
             "get": {
                 "operationId": "list",
                 "description": "A customized named ModelViewSet that knows how to register itself with the Pulp API router.\n\nThis viewset is discoverable by its name.\n\"Normal\" Django Models and Master/Detail models are supported by the ``register_with`` method.\n\nAttributes:\n    lookup_field (str): The name of the field by which an object should be looked up, in\n        addition to any parent lookups if this ViewSet is nested. Defaults to 'pk'\n    endpoint_name (str): The name of the final path segment that should identify the ViewSet's\n        collection endpoint.\n    nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must\n        correspond to the \"parent_prefix\" of a router with rest_framework_nested.NestedMixin.\n        None indicates this ViewSet should not be nested.\n    parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs\n        to django model filter expressions that can be used with the corresponding value from\n        self.kwargs, used only by a nested ViewSet to filter based on the parent object's\n        identity.\n    schema (DefaultSchema): The schema class to use by default in a viewset.",
@@ -939,7 +939,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/content/": {
+        "/pulp/api/v3/content/": {
             "get": {
                 "operationId": "list",
                 "description": "Endpoint to list all content.",
@@ -1166,7 +1166,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/content/core/openpgp_publickey/": {
+        "/pulp/api/v3/content/core/openpgp_publickey/": {
             "get": {
                 "operationId": "list",
                 "description": "A ViewSet for uploads that do not require to store an uploaded content as an Artifact.",
@@ -1653,7 +1653,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/content/core/openpgp_publicsubkey/": {
+        "/pulp/api/v3/content/core/openpgp_publicsubkey/": {
             "get": {
                 "operationId": "list",
                 "description": "Content viewset that supports only GET by default.",
@@ -2084,7 +2084,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/content/core/openpgp_signature/": {
+        "/pulp/api/v3/content/core/openpgp_signature/": {
             "get": {
                 "operationId": "list",
                 "description": "Content viewset that supports only GET by default.",
@@ -2525,7 +2525,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/content/core/openpgp_userattribute/": {
+        "/pulp/api/v3/content/core/openpgp_userattribute/": {
             "get": {
                 "operationId": "list",
                 "description": "Content viewset that supports only GET by default.",
@@ -2954,7 +2954,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/content/core/openpgp_userid/": {
+        "/pulp/api/v3/content/core/openpgp_userid/": {
             "get": {
                 "operationId": "list",
                 "description": "Content viewset that supports only GET by default.",
@@ -3452,7 +3452,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/contentguards/": {
+        "/pulp/api/v3/contentguards/": {
             "get": {
                 "operationId": "list",
                 "description": "Endpoint to list all contentguards.",
@@ -3726,7 +3726,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/contentguards/core/composite/": {
+        "/pulp/api/v3/contentguards/core/composite/": {
             "get": {
                 "operationId": "list",
                 "description": "Content guard that queries a list-of content-guards for access permissions.",
@@ -4565,7 +4565,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/contentguards/core/content_redirect/": {
+        "/pulp/api/v3/contentguards/core/content_redirect/": {
             "get": {
                 "operationId": "list",
                 "description": "Content guard to protect preauthenticated redirects to the content app.",
@@ -5404,7 +5404,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/contentguards/core/header/": {
+        "/pulp/api/v3/contentguards/core/header/": {
             "get": {
                 "operationId": "list",
                 "description": "Content guard to protect the content app using a specific header.",
@@ -6243,7 +6243,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/contentguards/core/rbac/": {
+        "/pulp/api/v3/contentguards/core/rbac/": {
             "get": {
                 "operationId": "list",
                 "description": "Viewset for creating contentguards that use RBAC to protect content.\nHas add and remove actions for managing permission for users and groups to download content\nprotected by this guard.",
@@ -7082,7 +7082,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/distributions/": {
+        "/pulp/api/v3/distributions/": {
             "get": {
                 "operationId": "list",
                 "description": "Provides base viewset for Distributions.",
@@ -7440,7 +7440,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/distributions/core/artifacts/": {
+        "/pulp/api/v3/distributions/core/artifacts/": {
             "get": {
                 "operationId": "list",
                 "description": "ViewSet for ArtifactDistribution.",
@@ -7840,7 +7840,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/distributions/core/openpgp/": {
+        "/pulp/api/v3/distributions/core/openpgp/": {
             "get": {
                 "operationId": "list",
                 "description": "Provides read and list methods and also provides asynchronous CUD methods to dispatch tasks\nwith reservation that lock all Distributions preventing race conditions during base_path\nchecking.",
@@ -8514,7 +8514,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/domains/": {
+        "/pulp/api/v3/domains/": {
             "get": {
                 "operationId": "list",
                 "description": "ViewSet for Domain.\n\nNOTE: This API endpoint is in \"tech preview\" and subject to change",
@@ -9250,7 +9250,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/domains/migrate/": {
+        "/pulp/api/v3/domains/migrate/": {
             "post": {
                 "operationId": "migrate",
                 "description": "Migrate the domain's storage backend to a new one.\n\nLaunches a background task to copy the domain's artifacts over to the supplied storage\nbackend. Then updates the domain's storage settings to the new storage backend. This task\ndoes not delete the stored files of the artifacts from the previous backend.\n\n**IMPORTANT** This task will block all other tasks within the domain until the migration is\ncompleted, essentially putting the domain into a read only state. Content will still be\nserved from the old storage backend until the migration has completed, so don't remove\nthe old backend until then. Note, this endpoint is not allowed on the default domain.\n\nThis feature is in Tech Preview and is subject to future change and thus not guaranteed to\nbe backwards compatible.",
@@ -9313,7 +9313,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/exporters/core/filesystem/": {
+        "/pulp/api/v3/exporters/core/filesystem/": {
             "get": {
                 "operationId": "list",
                 "description": "Endpoint for managing FilesystemExporters.",
@@ -10168,7 +10168,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/exporters/core/pulp/": {
+        "/pulp/api/v3/exporters/core/pulp/": {
             "get": {
                 "operationId": "list",
                 "description": "ViewSet for viewing PulpExporters.",
@@ -11021,7 +11021,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/groups/": {
+        "/pulp/api/v3/groups/": {
             "get": {
                 "operationId": "list",
                 "description": "ViewSet for Group.",
@@ -12449,7 +12449,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/importers/core/pulp/": {
+        "/pulp/api/v3/importers/core/pulp/": {
             "get": {
                 "operationId": "list",
                 "description": "ViewSet for PulpImporters.",
@@ -13273,7 +13273,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/importers/core/pulp/import-check/": {
+        "/pulp/api/v3/importers/core/pulp/import-check/": {
             "post": {
                 "operationId": "pulp_import_check_post",
                 "description": "Evaluates validity of proposed PulpImport parameters 'toc', 'path', and 'repo_mapping'.\n\n* Checks that toc, path are in ALLOWED_IMPORT_PATHS\n* if ALLOWED:\n  * Checks that toc, path exist and are readable\n  * If toc specified, checks that containing dir is writeable\n* Checks that repo_mapping is valid JSON",
@@ -13336,7 +13336,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/livez/": {
+        "/pulp/api/v3/livez/": {
             "get": {
                 "operationId": "livez_read",
                 "description": "Returns 200 OK when API is alive.",
@@ -13386,7 +13386,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/login/": {
+        "/pulp/api/v3/login/": {
             "get": {
                 "operationId": "login_read",
                 "parameters": [
@@ -13520,7 +13520,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/orphans/": {
+        "/pulp/api/v3/orphans/": {
             "delete": {
                 "operationId": "delete",
                 "description": "DEPRECATED! Trigger an asynchronous task that deletes all orphaned content and artifacts. Use the `POST /pulp/api/v3/orphans/cleanup/` call instead.",
@@ -13563,7 +13563,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/orphans/cleanup/": {
+        "/pulp/api/v3/orphans/cleanup/": {
             "post": {
                 "operationId": "cleanup",
                 "description": "Trigger an asynchronous orphan cleanup operation.",
@@ -13625,7 +13625,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/publications/": {
+        "/pulp/api/v3/publications/": {
             "get": {
                 "operationId": "list",
                 "description": "A base class for any publication viewset.",
@@ -13927,7 +13927,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/remotes/": {
+        "/pulp/api/v3/remotes/": {
             "get": {
                 "operationId": "list",
                 "description": "A customized named ModelViewSet that knows how to register itself with the Pulp API router.\n\nThis viewset is discoverable by its name.\n\"Normal\" Django Models and Master/Detail models are supported by the ``register_with`` method.\n\nAttributes:\n    lookup_field (str): The name of the field by which an object should be looked up, in\n        addition to any parent lookups if this ViewSet is nested. Defaults to 'pk'\n    endpoint_name (str): The name of the final path segment that should identify the ViewSet's\n        collection endpoint.\n    nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must\n        correspond to the \"parent_prefix\" of a router with rest_framework_nested.NestedMixin.\n        None indicates this ViewSet should not be nested.\n    parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs\n        to django model filter expressions that can be used with the corresponding value from\n        self.kwargs, used only by a nested ViewSet to filter based on the parent object's\n        identity.\n    schema (DefaultSchema): The schema class to use by default in a viewset.",
@@ -14304,7 +14304,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/repair/": {
+        "/pulp/api/v3/repair/": {
             "post": {
                 "operationId": "post",
                 "description": "Trigger an asynchronous task that checks for missing or corrupted artifacts, and attempts to redownload them.",
@@ -14367,7 +14367,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/repositories/": {
+        "/pulp/api/v3/repositories/": {
             "get": {
                 "operationId": "list",
                 "description": "Endpoint to list all repositories.",
@@ -14743,7 +14743,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/repositories/core/openpgp_keyring/": {
+        "/pulp/api/v3/repositories/core/openpgp_keyring/": {
             "get": {
                 "operationId": "list",
                 "description": "A ViewSet for an ordinary repository.",
@@ -15932,7 +15932,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/repositories/reclaim_space/": {
+        "/pulp/api/v3/repositories/reclaim_space/": {
             "post": {
                 "operationId": "reclaim",
                 "description": "Trigger an asynchronous space reclaim operation.",
@@ -15994,7 +15994,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/repository_versions/": {
+        "/pulp/api/v3/repository_versions/": {
             "get": {
                 "operationId": "list",
                 "description": "A mixin to hold the shared get_queryset logic used by RepositoryVersionViewSets.",
@@ -16283,7 +16283,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/roles/": {
+        "/pulp/api/v3/roles/": {
             "get": {
                 "operationId": "list",
                 "description": "ViewSet for Role.",
@@ -16895,7 +16895,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/signing-services/": {
+        "/pulp/api/v3/signing-services/": {
             "get": {
                 "operationId": "list",
                 "description": "A ViewSet that supports browsing of existing signing services.",
@@ -17138,7 +17138,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/status/": {
+        "/pulp/api/v3/status/": {
             "get": {
                 "operationId": "status_read",
                 "description": "Returns status and app information about Pulp.\n\nInformation includes:\n * version of pulpcore and loaded pulp plugins\n * known workers\n * known content apps\n * database connection status\n * redis connection status\n * disk usage information",
@@ -17195,7 +17195,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/task-groups/": {
+        "/pulp/api/v3/task-groups/": {
             "get": {
                 "operationId": "list",
                 "summary": "List task groups",
@@ -17428,7 +17428,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/task-schedules/": {
+        "/pulp/api/v3/task-schedules/": {
             "get": {
                 "operationId": "list",
                 "description": "ViewSet to monitor task schedules.",
@@ -17983,7 +17983,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/tasks/": {
+        "/pulp/api/v3/tasks/": {
             "get": {
                 "operationId": "list",
                 "description": "A customized named ModelViewSet that knows how to register itself with the Pulp API router.\n\nThis viewset is discoverable by its name.\n\"Normal\" Django Models and Master/Detail models are supported by the ``register_with`` method.\n\nAttributes:\n    lookup_field (str): The name of the field by which an object should be looked up, in\n        addition to any parent lookups if this ViewSet is nested. Defaults to 'pk'\n    endpoint_name (str): The name of the final path segment that should identify the ViewSet's\n        collection endpoint.\n    nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must\n        correspond to the \"parent_prefix\" of a router with rest_framework_nested.NestedMixin.\n        None indicates this ViewSet should not be nested.\n    parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs\n        to django model filter expressions that can be used with the corresponding value from\n        self.kwargs, used only by a nested ViewSet to filter based on the parent object's\n        identity.\n    schema (DefaultSchema): The schema class to use by default in a viewset.",
@@ -19183,7 +19183,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/tasks/purge/": {
+        "/pulp/api/v3/tasks/purge/": {
             "post": {
                 "operationId": "purge",
                 "description": "Trigger an asynchronous task that deletes completed tasks that finished prior to a specified timestamp.",
@@ -19246,7 +19246,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/uploads/": {
+        "/pulp/api/v3/uploads/": {
             "get": {
                 "operationId": "list",
                 "description": "View for chunked uploads.",
@@ -20047,7 +20047,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/upstream-pulps/": {
+        "/pulp/api/v3/upstream-pulps/": {
             "get": {
                 "operationId": "list",
                 "description": "API for configuring an upstream Pulp to replicate. This API is provided as a tech preview.",
@@ -21101,7 +21101,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/users/": {
+        "/pulp/api/v3/users/": {
             "get": {
                 "operationId": "list",
                 "description": "ViewSet for User.",
@@ -22185,7 +22185,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/vuln_report/": {
+        "/pulp/api/v3/vuln_report/": {
             "get": {
                 "operationId": "list",
                 "description": "A customized named ModelViewSet that knows how to register itself with the Pulp API router.\n\nThis viewset is discoverable by its name.\n\"Normal\" Django Models and Master/Detail models are supported by the ``register_with`` method.\n\nAttributes:\n    lookup_field (str): The name of the field by which an object should be looked up, in\n        addition to any parent lookups if this ViewSet is nested. Defaults to 'pk'\n    endpoint_name (str): The name of the final path segment that should identify the ViewSet's\n        collection endpoint.\n    nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must\n        correspond to the \"parent_prefix\" of a router with rest_framework_nested.NestedMixin.\n        None indicates this ViewSet should not be nested.\n    parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs\n        to django model filter expressions that can be used with the corresponding value from\n        self.kwargs, used only by a nested ViewSet to filter based on the parent object's\n        identity.\n    schema (DefaultSchema): The schema class to use by default in a viewset.",
@@ -22465,7 +22465,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/workers/": {
+        "/pulp/api/v3/workers/": {
             "get": {
                 "operationId": "list",
                 "description": "A customized named ModelViewSet that knows how to register itself with the Pulp API router.\n\nThis viewset is discoverable by its name.\n\"Normal\" Django Models and Master/Detail models are supported by the ``register_with`` method.\n\nAttributes:\n    lookup_field (str): The name of the field by which an object should be looked up, in\n        addition to any parent lookups if this ViewSet is nested. Defaults to 'pk'\n    endpoint_name (str): The name of the final path segment that should identify the ViewSet's\n        collection endpoint.\n    nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must\n        correspond to the \"parent_prefix\" of a router with rest_framework_nested.NestedMixin.\n        None indicates this ViewSet should not be nested.\n    parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs\n        to django model filter expressions that can be used with the corresponding value from\n        self.kwargs, used only by a nested ViewSet to filter based on the parent object's\n        identity.\n    schema (DefaultSchema): The schema class to use by default in a viewset.",
@@ -23061,45 +23061,10 @@
                 "type": "object",
                 "description": "A serializer for ArtifactDistribution.",
                 "properties": {
-                    "name": {
-                        "type": "string",
-                        "description": "A unique name. Ex, `rawhide` and `stable`."
-                    },
                     "no_content_change_since": {
                         "type": "string",
                         "readOnly": true,
                         "description": "Timestamp since when the distributed content served by this distribution has not changed. If equals to `null`, no guarantee is provided about content changes."
-                    },
-                    "pulp_labels": {
-                        "type": "object",
-                        "additionalProperties": {
-                            "type": [
-                                "string",
-                                "null"
-                            ]
-                        }
-                    },
-                    "content_guard": {
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "format": "uri",
-                        "description": "An optional content-guard."
-                    },
-                    "prn": {
-                        "type": "string",
-                        "readOnly": true,
-                        "description": "The Pulp Resource Name (PRN)."
-                    },
-                    "base_path": {
-                        "type": "string",
-                        "description": "The base (relative) path component of the published url. Avoid paths that                     overlap with other distribution base paths (e.g. \"foo\" and \"foo/bar\")"
-                    },
-                    "hidden": {
-                        "type": "boolean",
-                        "default": false,
-                        "description": "Whether this distribution should be shown in the content app."
                     },
                     "pulp_last_updated": {
                         "type": "string",
@@ -23112,11 +23077,46 @@
                         "format": "uri",
                         "readOnly": true
                     },
+                    "pulp_labels": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": [
+                                "string",
+                                "null"
+                            ]
+                        }
+                    },
                     "pulp_created": {
                         "type": "string",
                         "format": "date-time",
                         "readOnly": true,
                         "description": "Timestamp of creation."
+                    },
+                    "content_guard": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "uri",
+                        "description": "An optional content-guard."
+                    },
+                    "hidden": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Whether this distribution should be shown in the content app."
+                    },
+                    "base_path": {
+                        "type": "string",
+                        "description": "The base (relative) path component of the published url. Avoid paths that                     overlap with other distribution base paths (e.g. \"foo\" and \"foo/bar\")"
+                    },
+                    "prn": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "The Pulp Resource Name (PRN)."
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "A unique name. Ex, `rawhide` and `stable`."
                     },
                     "base_url": {
                         "type": "string",
@@ -27859,7 +27859,7 @@
                     "finished_before": {
                         "type": "string",
                         "format": "date-time",
-                        "default": "2026-01-09",
+                        "default": "2026-01-12",
                         "description": "Purge tasks completed earlier than this timestamp. Format '%Y-%m-%d[T%H:%M:%S]'"
                     },
                     "states": {

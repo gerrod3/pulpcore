@@ -16,10 +16,10 @@ ARG PACKAGE_SRC
 COPY $PACKAGE_SRC /
 
 # Now copy test runner specific files
-ARG TEST CLIENT_SRC
+ARG TEST CORE_CLIENT_SRC FILE_CLIENT_SRC CERTGUARD_CLIENT_SRC
 COPY .ci/compose/$TEST/settings.py /etc/pulp/settings.py
 COPY .ci/compose/$TEST/constraints.txt /constraints.txt
-COPY $CLIENT_SRC /
+COPY $CORE_CLIENT_SRC $FILE_CLIENT_SRC $CERTGUARD_CLIENT_SRC /
 
 # Now install everything
 ARG FULL_INSTALL

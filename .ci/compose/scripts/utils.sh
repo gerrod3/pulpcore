@@ -7,24 +7,24 @@ else
   CONTAINER_EXEC=docker
 fi
 
-git_branch() {
-    git branch --show-current
+git_sha() {
+    git rev-parse --short HEAD
 }
 
 project_name() {
-    echo "pulpcore-${TEST}-$(git_branch)"
+    echo "pulpcore-${TEST}-$(git_sha)"
 }
 
 compose_cmd() {
-    $CONTAINER_EXEC compose $@
+    $CONTAINER_EXEC compose "$@"
 }
 
 # Run a command on the main pulp service
 cmd_prefix() {
-    $CONTAINER_EXEC compose exec pulp $@
+    $CONTAINER_EXEC compose exec pulp "$@"
 }
 
 # Run a command as the limited pulp user
 cmd_user_prefix() {
-    $CONTAINER_EXEC compose exec -u pulp pulp $@
+    $CONTAINER_EXEC compose exec -u pulp pulp "$@"
 }

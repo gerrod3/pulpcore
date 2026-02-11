@@ -23,7 +23,7 @@
         "x-pulp-domain-enabled": false
     },
     "paths": {
-        "/hey/there/api/v3/acs/file/file/": {
+        "/pulp/api/v3/acs/file/file/": {
             "get": {
                 "operationId": "list",
                 "description": "Alternate Content Source ViewSet for File",
@@ -940,7 +940,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/content/file/files/": {
+        "/pulp/api/v3/content/file/files/": {
             "get": {
                 "operationId": "list",
                 "description": "\nFileContent represents a single file and its metadata, which can be added and removed from\nrepositories.",
@@ -1432,7 +1432,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/content/file/files/upload/": {
+        "/pulp/api/v3/content/file/files/upload/": {
             "post": {
                 "operationId": "upload",
                 "description": "Synchronously upload a File.",
@@ -1490,7 +1490,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/distributions/file/file/": {
+        "/pulp/api/v3/distributions/file/file/": {
             "get": {
                 "operationId": "list",
                 "description": "\nFileDistributions host File\nPublications which makes the metadata and the referenced File Content available to HTTP\nclients. Additionally, a FileDistribution with an associated FilePublication can be the target\nurl of a File Remote , allowing\nanother instance of Pulp to sync the content.",
@@ -2588,7 +2588,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/publications/file/file/": {
+        "/pulp/api/v3/publications/file/file/": {
             "get": {
                 "operationId": "list",
                 "description": "\nA FilePublication contains metadata about all the File Content in a particular File Repository Version.\nOnce a FilePublication has been created, it can be hosted using the\nFile Distribution API.",
@@ -3327,7 +3327,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/remotes/file/file/": {
+        "/pulp/api/v3/remotes/file/file/": {
             "get": {
                 "operationId": "list",
                 "description": "\nFileRemote represents an external source of File\nContent.  The target url of a FileRemote must contain a file manifest, which contains the\nmetadata for all files at the source.",
@@ -4448,7 +4448,7 @@
                 }
             }
         },
-        "/hey/there/api/v3/repositories/file/file/": {
+        "/pulp/api/v3/repositories/file/file/": {
             "get": {
                 "operationId": "list",
                 "description": "\nFileRepository represents a single file repository, to which content can be synced, added,\nor removed.",
