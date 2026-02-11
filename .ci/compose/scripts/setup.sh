@@ -18,11 +18,44 @@ TEST=$1
 
 export POST_SETUP=$PWD/.ci/compose/scripts/post_setup.sh
 
+touch .ci/compose/$TEST/constraints.txt
 if [[ "$TEST" = "pulp" ]]; then
   python3 .ci/scripts/calc_constraints.py -u pyproject.toml > .ci/compose/$TEST/constraints.txt
 fi
 if [[ "$TEST" = "lowerbounds" ]]; then
   python3 .ci/scripts/calc_constraints.py pyproject.toml > .ci/compose/$TEST/constraints.txt
+fi
+
+# Check that all required files for building the image are present
+
+if [ ! -f .ci/compose/$TEST/settings.py ]; then
+  echo "Error: settings.py file not found"
+  exit 1
+fi
+if [ ! -f .ci/compose/$TEST/constraints.txt ]; then
+  echo "Error: constraints.txt file not found"
+  exit 1
+fi
+PLUGIN_VERSION="$(bump-my-version show current_version | tail -n -1 | python -c 'from packaging.version import Version; print(Version(input()))')"
+PACKAGE_WHEEL="pulpcore-${PLUGIN_VERSION}-py3-none-any.whl"
+CORE_CLIENT_WHEEL="pulpcore_client-${PLUGIN_VERSION}-py3-none-any.whl"
+FILE_CLIENT_WHEEL="pulp_file_client-${PLUGIN_VERSION}-py3-none-any.whl"
+CERTGUARD_CLIENT_WHEEL="pulp_certguard_client-${PLUGIN_VERSION}-py3-none-any.whl"
+if [ ! -f dist/${PACKAGE_WHEEL} ]; then
+  echo "Error: ${PACKAGE_WHEEL} file not found"
+  exit 1
+fi
+if [ ! -f .ci/compose/$TEST/${CORE_CLIENT_WHEEL} ]; then
+  echo "Error: ${CORE_CLIENT_WHEEL} file not found"
+  exit 1
+fi
+if [ ! -f .ci/compose/$TEST/${FILE_CLIENT_WHEEL} ]; then
+  echo "Error: ${FILE_CLIENT_WHEEL} file not found"
+  exit 1
+fi
+if [ ! -f .ci/compose/$TEST/${CERTGUARD_CLIENT_WHEEL} ]; then
+  echo "Error: ${CERTGUARD_CLIENT_WHEEL} file not found"
+  exit 1
 fi
 
 if [ -f $POST_SETUP ]; then

@@ -6,16 +6,16 @@ services:
       context: ../..
       dockerfile: ".ci/compose/Containerfile"
       args:
-        - EXTRA_INSTALL=${EXTRA_INSTALL}
-        - PACKAGE_SRC=${PACKAGE_SRC}
-        - CORE_CLIENT_SRC=${CORE_CLIENT_SRC}
-        - FILE_CLIENT_SRC=${FILE_CLIENT_SRC}
-        - CERTGUARD_CLIENT_SRC=${CERTGUARD_CLIENT_SRC}
-        - FULL_INSTALL=${FULL_INSTALL}
-        - TEST=${TEST}
+        - EXTRA_INSTALL
+        - PACKAGE_SRC
+        - CORE_CLIENT_SRC
+        - FILE_CLIENT_SRC
+        - CERTGUARD_CLIENT_SRC
+        - FULL_INSTALL
+        - TEST
     image: "localhost/pulp-ci:${COMPOSE_PROJECT_NAME}"
     ports:
-      - "5003:443"
+      - "8122:443"
     healthcheck:
       test: "curl -f http://localhost:24817${PULP_API_ROOT:-/pulp/}api/v3/status/"
       interval: 10s

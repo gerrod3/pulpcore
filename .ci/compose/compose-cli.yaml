@@ -18,8 +18,8 @@ services:
         RUN cat /usr/local/share/ca-certificates/pulp_webserver.crt >> $(python -c 'import ssl; print(ssl.get_default_verify_paths().openssl_cafile)')
         RUN update-ca-certificates
       args:
-        - CLI_VERSION=${CLI_VERSION}
-        - PULP_API_ROOT=${PULP_API_ROOT}
-        - TEST=${TEST}
+        - CLI_VERSION
+        - PULP_API_ROOT
+        - TEST
     environment:
       PULP_FIXTURES_URL: "https://fixtures.pulpproject.org"

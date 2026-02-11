@@ -21,70 +21,53 @@ export POST_INSTALL=$PWD/.ci/compose/scripts/post_install.sh
 # This sets the project name for the compose command
 export COMPOSE_PROJECT_NAME=$(project_name)
 export PULP_API_ROOT="/pulp/"
+if [ "$TEST" = "s3" ]; then
+  export PULP_API_ROOT="/rerouted/djnd/"
+fi
 
 PLUGIN_VERSION="$(bump-my-version show current_version | tail -n -1 | python -c 'from packaging.version import Version; print(Version(input()))')"
 PACKAGE_WHEEL="pulpcore-${PLUGIN_VERSION}-py3-none-any.whl"
 CLIENT_WHEELS="pulpcore_client-${PLUGIN_VERSION}-py3-none-any.whl pulp_file_client-${PLUGIN_VERSION}-py3-none-any.whl pulp_certguard_client-${PLUGIN_VERSION}-py3-none-any.whl"
 FULL_INSTALL="${PACKAGE_WHEEL}"
+COMPOSE_FILES="-f .ci/compose/compose.yaml"
 if [ "$TEST" = "s3" ]; then
   FULL_INSTALL="${FULL_INSTALL}[s3]"
+  COMPOSE_FILES="${COMPOSE_FILES} -f .ci/compose/s3/compose-s3.yaml"
 fi
 if [ "$TEST" = "azure" ]; then
   FULL_INSTALL="${FULL_INSTALL}[azure]"
+  COMPOSE_FILES="${COMPOSE_FILES} .ci/compose/azure/compose-azure.yaml"
 fi
-FULL_INSTALL="${FULL_INSTALL} ${CLIENT_WHEELS} -r test_requirements.txt -c constraints.txt"
 
+export FULL_INSTALL="${FULL_INSTALL} ${CLIENT_WHEELS} -r test_requirements.txt -c constraints.txt"
 export PACKAGE_SRC="dist/${PACKAGE_WHEEL}"
 export CORE_CLIENT_SRC=".ci/compose/${TEST}/pulpcore_client-${PLUGIN_VERSION}-py3-none-any.whl"
 export FILE_CLIENT_SRC=".ci/compose/${TEST}/pulp_file_client-${PLUGIN_VERSION}-py3-none-any.whl"
 export CERTGUARD_CLIENT_SRC=".ci/compose/${TEST}/pulp_certguard_client-${PLUGIN_VERSION}-py3-none-any.whl"
-export FULL_INSTALL="${FULL_INSTALL}"
 
 # EXTRA_INSTALL comment
 # Always do a fresh build of the images
-compose_cmd -f .ci/compose/compose.yaml build
+compose_cmd ${COMPOSE_FILES} build
 # Start the services
-compose_cmd -f .ci/compose/compose.yaml up -d --wait
+compose_cmd ${COMPOSE_FILES} up -d --wait
 # Reset the admin password
 cmd_prefix pulpcore-manager reset-admin-password --password password
 
 # Build the pulp-cli image with the SSL cert built in
 compose_cmd cp pulp:/etc/pulp/certs/pulp_webserver.crt .ci/compose/${TEST}/pulp_webserver.crt
 export CLI_VERSION=$(pip index versions --json pulp-cli | jq -r '.latest')
-compose_cmd -f .ci/compose/compose-cli.yml build
+compose_cmd -f .ci/compose/compose-cli.yaml build
 
-# volumes:
-#   - ./ssh:/keys/
-#   - ~/.config:/var/lib/pulp/.config
+if [ "$TEST" = "s3" ]; then
+  compose_cmd exec minio bash -c "mc alias set s3 http://minio:9000 AKIAIT2Z5TDYPX3ARJBA fqRvjWaPU5o0fCqQuUWbj9Fainj2pVZtBCiDiieS --api S3v4"
+  compose_cmd exec minio bash -c "mc mb s3/pulp3"
+fi
 
-# SCENARIOS=("pulp" "performance" "azure" "gcp" "s3" "generate-bindings" "lowerbounds")
-# if [[ " ${SCENARIOS[*]} " =~ " ${TEST} " ]]; then
-#   sed -i -e '/^services:/a \
-#   - name: pulp-fixtures\
-#     image: docker.io/pulp/pulp-fixtures:latest\
-#     env: {BASE_URL: "http://pulp-fixtures:8080"}' vars/main.yaml
+# Disable redis on S3
+if [ "$TEST" = "s3" ]; then
+  cmd_prefix s6-rc -d change redis
+fi
 
-#   export REMOTE_FIXTURES_ORIGIN="http://pulp-fixtures:8080"
-# fi
-
-# if [ "$TEST" = "s3" ]; then
-#   export MINIO_ACCESS_KEY=AKIAIT2Z5TDYPX3ARJBA
-#   export MINIO_SECRET_KEY=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
-#   sed -i -e '/^services:/a \
-#   - name: minio\
-#     image: minio/minio\
-#     env:\
-#       MINIO_ACCESS_KEY: "'$MINIO_ACCESS_KEY'"\
-#       MINIO_SECRET_KEY: "'$MINIO_SECRET_KEY'"\
-#     command: "server /data"' vars/main.yaml
-#   sed -i -e '$a s3_test: true\
-# minio_access_key: "'$MINIO_ACCESS_KEY'"\
-# minio_secret_key: "'$MINIO_SECRET_KEY'"\
-# pulp_scenario_settings: {"DISABLED_authentication_backends": "@merge django.contrib.auth.backends.RemoteUserBackend", "DISABLED_authentication_json_header": "HTTP_X_RH_IDENTITY", "DISABLED_authentication_json_header_jq_filter": ".identity.user.username", "DISABLED_authentication_json_header_openapi_security_scheme": {"description": "External OAuth integration", "flows": {"clientCredentials": {"scopes": {"api.console": "grant_access_to_pulp"}, "tokenUrl": "https://your-identity-provider/token/issuer"}}, "type": "oauth2"}, "DISABLED_rest_framework__default_authentication_classes": "@merge pulpcore.app.authentication.JSONHeaderRemoteAuthentication", "MEDIA_ROOT": "", "STORAGES": {"default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage", "OPTIONS": {"access_key": "AKIAIT2Z5TDYPX3ARJBA", "addressing_style": "path", "bucket_name": "pulp3", "default_acl": "@none", "endpoint_url": "http://minio:9000", "region_name": "eu-central-1", "secret_key": "fqRvjWaPU5o0fCqQuUWbj9Fainj2pVZtBCiDiieS", "signature_version": "s3v4"}}, "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}}, "domain_enabled": true, "hide_guarded_distributions": true, "rest_framework__default_permission_classes": ["pulpcore.plugin.access_policy.AccessPolicyFromSettings"], "spectacular_settings__oas_version": "3.0.3"}\
-# pulp_scenario_env: {}\
-# ' vars/main.yaml
-#   export PULP_API_ROOT="/rerouted/djnd/"
-# fi
 
 # if [ "$TEST" = "azure" ]; then
 #   sed -i -e '/^services:/a \
@@ -97,12 +80,6 @@ compose_cmd -f .ci/compose/compose-cli.yml build
 # pulp_scenario_settings: {"MEDIA_ROOT": "", "STORAGES": {"default": {"BACKEND": "storages.backends.azure_storage.AzureStorage", "OPTIONS": {"account_key": "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==", "account_name": "devstoreaccount1", "azure_container": "pulp-test", "connection_string": "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://ci-azurite:10000/devstoreaccount1;", "expiration_secs": 120, "location": "pulp3", "overwrite_files": true}}, "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}}, "api_root_rewrite_header": "X-API-Root", "content_origin": null, "domain_enabled": true, "rest_framework__default_authentication_classes": "@merge pulpcore.app.authentication.PulpRemoteUserAuthentication", "rest_framework__default_permission_classes": ["pulpcore.plugin.access_policy.DefaultAccessPolicy"], "task_diagnostics": ["memory"]}\
 # pulp_scenario_env: {}\
 # ' vars/main.yaml
-# fi
-
-# echo "PULP_API_ROOT=${PULP_API_ROOT}" >> "$GITHUB_ENV"
-
-# if [ "${PULP_API_ROOT:-}" ]; then
-#   sed -i -e '$a api_root: "'"$PULP_API_ROOT"'"' vars/main.yaml
 # fi
 
 # if [[ "$TEST" = "azure" ]]; then

@@ -36,8 +36,15 @@ test-install:
 test:
 	$(SCRIPTS_DIR)/test.sh $(TEST)
 
+clean-test:
+	rm -f $(TEST_DIR)/pulp_webserver.crt
+	rm -f $(TEST_DIR)/constraints.txt
+	rm -f $(TEST_DIR)/*api.json
+	rm -f $(TEST_DIR)/*_client-*.whl
+	rm -f $(TEST_DIR)/*_client-*.tar.gz
+
 ci-build: build install openapi bindings bindings-docs
 
 ci-test: test-setup test-install test
 
-ci: ci-build ci-test
+ci: clean-test ci-build ci-test
