@@ -37,7 +37,7 @@ fi
 if [ "$TEST" = "azure" ]; then
   FULL_INSTALL="${FULL_INSTALL}[azure]"
   COMPOSE_FILES="${COMPOSE_FILES} .ci/compose/azure/compose.azure.yaml"
-f
+fi
 
 export FULL_INSTALL="${FULL_INSTALL} ${CLIENT_WHEELS} -r test_requirements.txt -c constraints.txt"
 export PACKAGE_SRC="dist/${PACKAGE_WHEEL}"
@@ -56,7 +56,7 @@ cmd_prefix pulpcore-manager reset-admin-password --password password
 # Build the pulp-cli image with the SSL cert built in
 compose_cmd cp pulp:/etc/pulp/certs/pulp_webserver.crt .ci/compose/${TEST}/pulp_webserver.crt
 export CLI_VERSION=$(pip index versions --json pulp-cli | jq -r '.latest')
-compose_cmd -f .ci/compose/compose-cli.yaml build
+$CONTAINER_EXEC build -f .ci/compose/cli.Containerfile -t localhost/pulp-cli:${COMPOSE_PROJECT_NAME} --build-arg CLI_VERSION=${CLI_VERSION} --build-arg PULP_API_ROOT=${PULP_API_ROOT} --build-arg TEST=${TEST} .ci/compose
 
 if [ "$TEST" = "s3" ]; then
   compose_cmd exec minio bash -c "mc alias set s3 http://minio:9000 AKIAIT2Z5TDYPX3ARJBA fqRvjWaPU5o0fCqQuUWbj9Fainj2pVZtBCiDiieS --api S3v4"

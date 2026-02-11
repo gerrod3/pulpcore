@@ -18,11 +18,10 @@ source .ci/compose/scripts/utils.sh
 
 # This sets the project name for the compose command
 export COMPOSE_PROJECT_NAME=$(project_name)
-# export PULP_URL="https://pulp"
 
-# REPORTED_STATUS="$(pulp status)"
+REPORTED_STATUS="$(cli_cmd pulp status)"
 
-# echo "${REPORTED_STATUS}"
+echo "${REPORTED_STATUS}"
 
 # check for any uncommitted migrations
 echo "Checking for uncommitted migrations..."
@@ -70,4 +69,4 @@ else
 fi
 
 # TEST pulp-cli
-compose_cmd run cli pytest -v -m "pulp_file"
+cli_cmd pytest -v -m "file"

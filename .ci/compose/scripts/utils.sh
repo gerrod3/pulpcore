@@ -28,3 +28,8 @@ cmd_prefix() {
 cmd_user_prefix() {
     $CONTAINER_EXEC compose exec -u pulp pulp "$@"
 }
+
+# Run a command in the cli container
+cli_cmd() {
+    $CONTAINER_EXEC run -it --rm --network $(project_name)_default localhost/pulp-cli:$(project_name) "$@"
+}
