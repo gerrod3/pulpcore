@@ -18,12 +18,12 @@ TEST=$1
 
 export POST_SETUP=$PWD/.ci/compose/scripts/post_setup.sh
 
-touch .ci/compose/$TEST/constraints.txt
+cp .ci/assets/ci_constraints.txt .ci/compose/$TEST/constraints.txt
 if [[ "$TEST" = "pulp" ]]; then
-  python3 .ci/scripts/calc_constraints.py -u pyproject.toml > .ci/compose/$TEST/constraints.txt
+  python3 .ci/scripts/calc_constraints.py -u pyproject.toml >> .ci/compose/$TEST/constraints.txt
 fi
 if [[ "$TEST" = "lowerbounds" ]]; then
-  python3 .ci/scripts/calc_constraints.py pyproject.toml > .ci/compose/$TEST/constraints.txt
+  python3 .ci/scripts/calc_constraints.py pyproject.toml >> .ci/compose/$TEST/constraints.txt
 fi
 
 # Check that all required files for building the image are present
