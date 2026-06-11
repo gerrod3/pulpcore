@@ -20,6 +20,12 @@ def _fix_response_headers(monkeypatch, pulpcore_bindings):
         "getheaders",
         lambda self: dict(self.response.headers),
     )
+    # OpenAPI v7.19 switches to using the headers property instead of getheaders
+    monkeypatch.setattr(
+        pulpcore_bindings.module.rest.RESTResponse,
+        "headers",
+        lambda self : dict(self.response.headers),
+    )
 
 
 @pytest.fixture
